@@ -45,7 +45,14 @@ function tuitar(mensagem) {
 
 async function main() {
     var recuperados = await obterNumeroDeRecuperados();
-    console.log(recuperados);
+    var tuite = 'Bom dia!\n';
+    tuite += '\n';
+    tuite += recuperados + ' brasileiros se recuperaram da #Covid19 até o momento\n';
+    tuite += '\n';
+    tuite += 'Fonte: https://covid.saude.gov.br';
+    tuitar(tuite);
 }
 
-main();
+Cron.schedule('30 6 * * *', () => {
+    main();
+});
