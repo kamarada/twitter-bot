@@ -19,6 +19,7 @@
   "homepage": "https://github.com/kamarada/twitter-bot#readme",
   "dependencies": {
     "dotenv": "^8.2.0",
+    "node-cron": "^2.0.3",
     "twit": "^2.2.11"
   }
 }

@@ -1,3 +1,5 @@
+const Cron = require('node-cron');
+
 const Twit = require('twit');
 
 require('dotenv').config();
@@ -24,4 +26,8 @@ async function main() {
     tuitar('Olá, Twitter!');
 }
 
-main();
+// main();
+
+Cron.schedule('*/2 * * * * *', () => {
+    console.log('Esse agendamento roda segundo sim, segundo não');
+});
