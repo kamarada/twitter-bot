@@ -63,6 +63,7 @@ function tuitar(mensagem) {
             twitter.post('statuses/update',
             {
                 media_ids: new Array(data.media_id_string),
+                place_id: '1b107df3ccc0aaa1', // Brasil
                 status: mensagem
             },
             function(err, data, response) {
