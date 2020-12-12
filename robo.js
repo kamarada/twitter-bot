@@ -25,6 +25,20 @@ async function obterNumeroDeRecuperados() {
     return recuperados;
 }
 
+function obterCumprimento() {
+    var data = new Date();
+    var hora = data.getHours();
+    var cumprimento;
+    if (hora < 12) {
+        cumprimento = 'Bom dia';
+    } else if (hora < 18) {
+        cumprimento = 'Boa tarde';
+    } else {
+        cumprimento = 'Boa noite';
+    }
+    return cumprimento;
+}
+
 function tuitar(mensagem) {
     var twitter = new Twit({
         consumer_key:         process.env.CONSUMER_KEY,
@@ -45,7 +59,8 @@ function tuitar(mensagem) {
 
 async function main() {
     var recuperados = await obterNumeroDeRecuperados();
-    var tuite = 'Bom dia!\n';
+    var cumprimento = obterCumprimento();
+    var tuite = cumprimento + '!\n';
     tuite += '\n';
     tuite += recuperados + ' brasileiros se recuperaram da #Covid19 até o momento\n';
     tuite += '\n';
@@ -53,6 +68,6 @@ async function main() {
     tuitar(tuite);
 }
 
-Cron.schedule('30 6 * * *', () => {
+Cron.schedule('0 6,12,18 * * *', () => {
     main();
 });
