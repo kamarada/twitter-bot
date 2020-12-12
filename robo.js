@@ -2,6 +2,8 @@ const Cron = require('node-cron');
 
 const puppeteer = require('puppeteer');
 
+const fs = require('fs');
+
 const Twit = require('twit');
 
 require('dotenv').config();
@@ -17,6 +19,7 @@ async function obterNumeroDeRecuperados() {
         timeout: 60*1000,
         waitUntil: 'networkidle2'
     });
+    await page.screenshot({path: 'covid-saude.png'});
     var recuperados = await page.evaluate(() => {
         var numeroNaPagina = document.getElementsByClassName('lb-total')[0].lastChild.data.trim();
         return numeroNaPagina
@@ -48,12 +51,26 @@ function tuitar(mensagem) {
         timeout_ms:           60*1000,
         strictSSL:            true
     });
-    twitter.post('statuses/update',
+    var imagemEmBase64 = fs.readFileSync('covid-saude.png', {encoding: 'base64'});
+    twitter.post('media/upload',
     {
-        status: mensagem
+        media_data: imagemEmBase64
     },
     function(err, data, response) {
-        console.log(data)
+        if (err) {
+            console.log('Erro ao enviar a imagem: ', err);
+        } else {
+            twitter.post('statuses/update',
+            {
+                media_ids: new Array(data.media_id_string),
+                status: mensagem
+            },
+            function(err, data, response) {
+                if (err) {
+                    console.log('Erro ao tuitar: ', err);
+                }
+            });
+        }
     });
 }
 
